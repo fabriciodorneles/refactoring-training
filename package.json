@@ -13,6 +13,7 @@
     "eslint-plugin-import": "^2.22.1"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "send": "make git m=$M"
   }
 }
