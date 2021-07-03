@@ -1,14 +1,51 @@
 function statement(invoice, plays) {
+  return renderPlainText(invoice, plays);
+}
+function renderPlainText(invoice, plays) {
   let result = `Statement for ${invoice.customer}\n`;
-
   for (const perf of invoice.performances) {
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
   }
-
   result += `Amount owed is ${usd(totalAmount())}\n`;
   result += `You earned ${totalVolumeCredits()} credits`;
 
   return result;
+
+  function totalAmount() {
+    let result = 0;
+    for (const perf of invoice.performances) {
+      result += amountFor(perf);
+    }
+    return result;
+  }
+
+  function totalVolumeCredits() {
+    let result = 0;
+    for (const perf of invoice.performances) {
+      result += volumeCreditsFor(perf);
+    }
+    return result;
+  }
+
+  function usd(aNumber) {
+    return new Intl.NumberFormat('en-US',
+      {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+      }).format(aNumber / 100);
+  }
+
+  function volumeCreditsFor(aPerformance) {
+    let result = 0;
+    result = Math.max(aPerformance.audience - 30, 0);
+    if (playFor(aPerformance).type === 'comedy') result += Math.floor(aPerformance.audience / 5);
+    return result;
+  }
+
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
+  }
 
   function amountFor(aPerformance) {
     let result = 0;
@@ -30,42 +67,6 @@ function statement(invoice, plays) {
         throw new Error(`unknown type: ${playFor(aPerformance).type}`);
     }
     return result;
-  }
-
-  function totalVolumeCredits() {
-    let result = 0;
-    for (const perf of invoice.performances) {
-      result += volumeCreditsFor(perf);
-    }
-    return result;
-  }
-
-  function totalAmount() {
-    let result = 0;
-    for (const perf of invoice.performances) {
-      result += amountFor(perf);
-    }
-    return result;
-  }
-
-  function volumeCreditsFor(aPerformance) {
-    let result = 0;
-    result = Math.max(aPerformance.audience - 30, 0);
-    if (playFor(aPerformance).type === 'comedy') result += Math.floor(aPerformance.audience / 5);
-    return result;
-  }
-
-  function playFor(aPerformance) {
-    return plays[aPerformance.playID];
-  }
-
-  function usd(aNumber) {
-    return new Intl.NumberFormat('en-US',
-      {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2,
-      }).format(aNumber / 100);
   }
 }
 
