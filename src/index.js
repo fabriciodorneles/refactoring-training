@@ -1,4 +1,4 @@
-const Statement = require('./statement');
+const [statement, htmlStatement] = require('./statement');
 
 const actualPlays = {
   hamlet: {
@@ -33,4 +33,5 @@ const actualInvoice = {
   ],
 };
 
-console.log(Statement(actualInvoice, actualPlays));
+console.log(statement(actualInvoice, actualPlays));
+console.log(htmlStatement(actualInvoice, actualPlays));
