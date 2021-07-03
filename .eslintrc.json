@@ -1,4 +1,12 @@
 {
+    "overrides": [
+        {
+          "files": ["**/*.spec.js", "**/__mocks__/**"],
+          "env": {
+            "jest": true
+          }
+        }
+    ],
     "env": {
         "es6": true,
         "node": true
@@ -17,6 +25,7 @@
     "rules": {
         "no-restricted-syntax":"off",
         "no-unused-vars":"warn",
-        "no-irregular-whitespace":"off"
+        "no-irregular-whitespace":"off",
+        "import/extensions":"off"
     }
 }
